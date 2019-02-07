@@ -5,8 +5,14 @@
     box-shadow: 0 2px 3px #ccc;
     padding: 16px;
     text-align: center;
+    max-width: 75rem;
+    padding: 0px;
 }
 
 .Image {
-    width: 50px;
+    width: 200px;
+}
+
+.Author {
+    display: flex;
 }
