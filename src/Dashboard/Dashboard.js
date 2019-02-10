@@ -2,7 +2,9 @@ import React, { Component } from 'react';
 import './Dashboard.scss';
 import Post from './Post/Post';
 import { connect } from 'react-redux';
-import { fetchPosts } from '../store/actions';
+import { fetchPosts, ERROR } from '../store/actions';
+import Loader from 'react-loader-spinner';
+import Error from '../Common/Error/Error';
 
 class Dashboard extends Component {
 
@@ -27,17 +29,25 @@ class Dashboard extends Component {
 
 
     createPostsList() {
-        return this.props.posts.map(post => {
+        if (!this.props.posts) {
+            return;
+        }
+        return this.props.posts.map((post, index) => {
+            if (!(post.data.url && post.data.url.endsWith('.jpg'))) {
+                return;
+            }
             return (
-                <Post key={post.id} data={post}></Post>
+                <div key={index} className="Card-Position">
+                    <Post key={post.id} data={post}></Post>
+                </div>
             );
         });
     }
 
     createHeader() {
-        return this.state.subreddits.map(subreddit => {
+        return this.state.subreddits.map((subreddit, index) => {
             return (
-                <li className="nav-item">
+                <li key={index} className="nav-item">
                     <a className="nav-link Cursor" onClick={() => this.props.putPostDataToStore(subreddit.toLowerCase())}>{subreddit}</a>
                 </li>
             );
@@ -45,24 +55,46 @@ class Dashboard extends Component {
     }
 
     render() {
+        let postsData;
+        if (this.props.status === 'RESOLVING') {
+            postsData = <div className="Spinner">
+                <Loader
+                    type="Circles"
+                    color="#00BFFF"
+                    height="100"
+                    width="100"
+                />
+            </div>
+        } else if (this.props.status === 'ERROR') {
+            postsData = <div className="Error-Position mt-4">
+                <Error/>
+            </div>
+        } else {
+            postsData = this.createPostsList();
+        }
         return (
-            <div className="Dashboard">
-                {<nav className="navbar navbar-expand-lg navbar-light bg-light">
-                    <a className="navbar-brand" href="#">SubReddits</a>
-                    <button className="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-                        <span className="navbar-toggler-icon"></span>
-                    </button>
-                    <div className="collapse navbar-collapse" id="navbarNav">
-                        <ul className="navbar-nav">
-                            {
-                                this.createHeader()
-                            } 
-                        </ul>
-                    </div>
-                </nav>
+            <div>
+                {
+                    <nav className="navbar navbar-expand-lg navbar-light bg-light sticky-top">
+                        <a className="navbar-brand" href="#">SubReddits</a>
+                        <button className="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                            <span className="navbar-toggler-icon"></span>
+                        </button>
+                        <div className="collapse navbar-collapse" id="navbarNav">
+                            <ul className="navbar-nav">
+                                {
+                                    this.createHeader()
+                                }
+                            </ul>
+                        </div>
+                    </nav>
                 }
                 {
-                    this.createPostsList()
+                    <div className="container-fluid">
+                        {
+                            postsData
+                        }
+                    </div>
                 }
             </div>
         );
@@ -70,7 +102,8 @@ class Dashboard extends Component {
 }
 const mapStateToProps = state => {
     return {
-        posts: state.posts
+        posts: state.posts,
+        status: state.status
     };
 };
 

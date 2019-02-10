@@ -7107,6 +7107,17 @@ react-is@^16.6.3, react-is@^16.7.0:
   version "16.8.0"
   resolved "https://registry.yarnpkg.com/react-is/-/react-is-16.8.0.tgz#518db476214f3fb0716af9f82dfd420225ae970f"
 
+react-loader-spinner@^2.3.0:
+  version "2.3.0"
+  resolved "https://registry.yarnpkg.com/react-loader-spinner/-/react-loader-spinner-2.3.0.tgz#0f14da82f42cdfdf6567f8ddac3d4bd150cea231"
+  dependencies:
+    babel-runtime "^6.26.0"
+    prop-types "^15.6.2"
+
+react-modal-image@^2.3.2:
+  version "2.3.2"
+  resolved "https://registry.yarnpkg.com/react-modal-image/-/react-modal-image-2.3.2.tgz#8ec3a935bc407799d4c187c477d810d4b625e8c0"
+
 react-redux@^6.0.0:
   version "6.0.0"
   resolved "https://registry.yarnpkg.com/react-redux/-/react-redux-6.0.0.tgz#09e86eeed5febb98e9442458ad2970c8f1a173ef"
